@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xankong-cocaking
+  labels:
+    app: xankong
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: xankong
+  template:
+    metadata:
+      labels:
+        app: xankong
+    spec:
+      containers:
+      - name: xankong
+        image: yourusername/xankong-cocaking-os:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: xankong-secrets
+              key: bot-token
+              optional: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
